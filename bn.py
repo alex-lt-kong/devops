@@ -1,25 +1,34 @@
 #!/usr/bin/python3
 
-import argparse
+import click
 import datetime as dt
+import logging
 import os
 import socket
 import subprocess
 import time
 
+app_dir = os.path.dirname(os.path.realpath(__file__))
 
-def main():
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--debug', dest='debug', action='store_true')
-    args = vars(ap.parse_args())
-    debug_mode = args['debug']
+@click.command()
+@click.option('--debug', is_flag=True)
+@click.option(
+    '--delay', default=300,
+    help='Number of seconds to wait before sending the notification email')
+def main(debug: bool, delay: int):
 
     boot_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if debug_mode is False:
-        time.sleep(300)
-        # Delay the message so that it is sent AFTER network is up.
+    logging.basicConfig(
+        filename=os.path.join(app_dir, 'bn.log'),
+        level=logging.DEBUG if debug else logging.INFO,
+        format=('%(asctime)s %(levelname)s '
+                '%(module)s - %(funcName)s: %(message)s'),
+        datefmt='%Y-%m-%d %H:%M:%S',
+    )
+    logging.debug(f'Delay for {delay} seconds before sending notification')
+    time.sleep(delay)
 
     fsck_info = ''
     if os.uname()[4][:3] == 'arm':
@@ -29,12 +38,21 @@ def main():
             if "systemd-fsck" in line:
                 fsck_info += line
 
-    command = ('/bin/echo', '-e',
-               (f'Subject:Device [{socket.gethostname()}] booted\n'
-                f'{socket.gethostname()} is booted at {boot_time}{fsck_info}'))
-    ps = subprocess.Popen(command, stdout=subprocess.PIPE)
-    output = subprocess.check_output(('/usr/bin/msmtp', '-t', 'root'),
-                                     stdin=ps.stdout)
+    cmd = ['/bin/echo', '-e',
+           (f'Subject:Device [{socket.gethostname()}] booted\n'
+            f'{socket.gethostname()} is booted at {boot_time}{fsck_info}')]
+    ps = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    cmd = ['/usr/bin/msmtp', '-t', 'root']
+    p = subprocess.Popen(cmd, stdin=ps.stdout,
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+
+    if p.returncode == 0:
+        logging.info('boot notification sent without error')
+    else:
+        logging.error(f'ffmpeg non-zero exist code: {p.returncode}')
+        logging.error(f'stdout: {stdout.decode("utf-8")}')
+        logging.error(f'stderr: {stderr.decode("utf-8")}')
 
 
 if __name__ == '__main__':
