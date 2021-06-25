@@ -9,19 +9,19 @@ import subprocess
 import time
 
 app_dir = os.path.dirname(os.path.realpath(__file__))
+log_path = os.path.join(app_dir, 'bn.log')
 
 
 @click.command()
 @click.option('--debug', is_flag=True)
-@click.option(
-    '--delay', default=300,
-    help='Number of seconds to wait before sending the notification email')
-def main(debug: bool, delay: int):
+@click.option('--delay', default=300, help='seconds to wait before sending')
+@click.option('--tail', default=30, help='lines of log to append')
+def main(debug: bool, delay: int, tail: int):
 
     boot_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     logging.basicConfig(
-        filename=os.path.join(app_dir, 'bn.log'),
+        filename=log_path,
         level=logging.DEBUG if debug else logging.INFO,
         format=('%(asctime)s %(levelname)s '
                 '%(module)s - %(funcName)s: %(message)s'),
@@ -38,9 +38,18 @@ def main(debug: bool, delay: int):
             if "systemd-fsck" in line:
                 fsck_info += line
 
+    try:
+        with open(log_path, 'r') as log_file:
+            lines = log_file.readlines()[-1 * tail:]
+            lines = ''.join(lines)
+    except Exception as e:
+        logging.info('Unable to read log file'
+                     f'(notification will be sent anyway): {e}')
+
     cmd = ['/bin/echo', '-e',
            (f'Subject:Device [{socket.gethostname()}] booted\n'
-            f'{socket.gethostname()} is booted at {boot_time}{fsck_info}')]
+            f'{socket.gethostname()} is booted at {boot_time}{fsck_info}\n\n'
+            f'Latest log:\n{lines}')]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     cmd = ['/usr/bin/msmtp', '-t', 'root']
     p2 = subprocess.Popen(cmd, stdin=p1.stdout,
