@@ -41,16 +41,16 @@ def main(debug: bool, delay: int):
     cmd = ['/bin/echo', '-e',
            (f'Subject:Device [{socket.gethostname()}] booted\n'
             f'{socket.gethostname()} is booted at {boot_time}{fsck_info}')]
-    ps = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     cmd = ['/usr/bin/msmtp', '-t', 'root']
-    p = subprocess.Popen(cmd, stdin=ps.stdout,
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = p.communicate()
+    p2 = subprocess.Popen(cmd, stdin=p1.stdout,
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p2.communicate()
 
-    if p.returncode == 0:
+    if p2.returncode == 0:
         logging.info('boot notification sent without error')
     else:
-        logging.error(f'ffmpeg non-zero exist code: {p.returncode}')
+        logging.error(f'ffmpeg non-zero exist code: {p2.returncode}')
         logging.error(f'stdout: {stdout.decode("utf-8")}')
         logging.error(f'stderr: {stderr.decode("utf-8")}')
 
