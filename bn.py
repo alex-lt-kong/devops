@@ -11,7 +11,6 @@ import time
 app_dir = os.path.dirname(os.path.realpath(__file__))
 log_path = os.path.join(app_dir, 'bn.log')
 
-
 @click.command()
 @click.option('--debug', is_flag=True)
 @click.option('--delay', default=300, help='seconds to wait before sending')
@@ -57,9 +56,9 @@ def main(debug: bool, delay: int, tail: int):
     stdout, stderr = p2.communicate()
 
     if p2.returncode == 0:
-        logging.info('boot notification sent without error')
+        logging.info('boot notification sent without errors')
     else:
-        logging.error(f'ffmpeg non-zero exist code: {p2.returncode}')
+        logging.error(f'msmtp returns non-zero exit code: {p2.returncode}')
         logging.error(f'stdout: {stdout.decode("utf-8")}')
         logging.error(f'stderr: {stderr.decode("utf-8")}')
 
