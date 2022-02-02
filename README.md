@@ -1,5 +1,7 @@
 # smart-notifier
 
+Send email notifications when a SMART warning is detected by smartmontools
+
 ## Usage
 
 Install `smartmontools`: `apt install smartmontools`
