@@ -13,3 +13,7 @@ Add the following line to `/etc/smartd.conf`:
 ```
 DEVICESCAN -a -s (S/../.././20|L/../../6/21) -m root -M test -M exec /usr/local/bin/smart-notifier/sn.sh
 ```
+
+## Verification
+
+Restart the smartd service `systemctl status smartd` and then you should receive test emails.
