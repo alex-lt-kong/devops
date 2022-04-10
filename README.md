@@ -16,6 +16,21 @@ virt-install \
 --disk path=/var/vms/dns.qcow2,size=11,bus=virtio,format=qcow2
 ```
 
-* SSH portforwarding for secure VNC: `ssh root@host -L 5901:localhost:5901`
+* Map `localhost:5901` to `remote:5901` for secure VNC: `ssh user@host -L 5901:localhost:5901`
 
-* Expert mode is usually recommended for more flexibility.
+* Expert mode is usually recommended for more flexibility:
+  * Use root account only.
+  * Disable default security update (as it is very sloooow in China).
+
+* Partitioning: select manual partitioning and add only one root partition.
+Swap and EFI paritions are both optional.
+
+* Remember to reanble security update if it is disabled during installation.
+A template can be found here: https://wiki.debian.org/SourcesList#Example_sources.list
+
+## Management
+
+### Enable/Disable guest auto start
+
+* Enable: `virsh autostart [Guest Name]`
+* Disable: `virsh autostart [Guest Name] --disable`
