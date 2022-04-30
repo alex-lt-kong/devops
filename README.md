@@ -28,12 +28,21 @@ virt-install \
   * Swap and EFI paritions are both optional.
 
 * After install:
-  * Remember to reanble security update if it is disabled during installation. A template can be found here: https://wiki.debian.org/SourcesList#Example_sources.list
+  * Remember to re-enable security update if it is disabled during installation. A template can be found here: https://wiki.debian.org/SourcesList#Example_sources.list
   * Should we disable VNC? By default it should listen on `127.0.0.1:5900` only, just in case we break SSH, can leave it turned on.
 
 ## Management
+
+### Clone an existing VM
+
+* virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone
+* It takes care of MAC address, etc.
+* It does not change SSH host keys, though:
+  * Remove existing keys: `rm -v /etc/ssh/ssh_host_*`
+  * Re-generate: `dpkg-reconfigure openssh-server`
 
 ### Enable/Disable guest auto start
 
 * Enable: `virsh autostart [Guest Name]`
 * Disable: `virsh autostart [Guest Name] --disable`
+
