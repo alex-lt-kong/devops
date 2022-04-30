@@ -33,6 +33,37 @@ virt-install \
 
 ## Management
 
+### Network bridge
+
+* List all members of a bridge: `brctl show`
+
+### Shared directory
+
+* `virsh edit [VMName]`
+* Revise the VM's XML definition as follows on host
+```
+<domain>
+  ...
+  <memoryBacking>
+    <source type='memfd'/>
+    <access mode='shared'/>
+  </memoryBacking>
+  ...
+  <devices>
+    ...
+    <filesystem type='mount' accessmode='passthrough'>
+      <driver type='virtiofs'/>
+      <source dir='/path'/>
+      <target dir='mount_tag'/>
+    </filesystem>
+    ...
+  </devices>
+</domain>
+```
+* Issue on guest: `mount -t virtiofs mount_tag /mnt/mount/path`
+* Reference: https://libvirt.org/kbase/virtiofs.html
+
+
 ### Clone an existing VM
 
 * virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone
