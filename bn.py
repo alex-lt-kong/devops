@@ -46,8 +46,8 @@ def main(debug: bool, delay: int, tail: int):
                      f'(notification will be sent anyway): {e}')
 
     cmd = ['/bin/echo', '-e',
-           (f'Subject:Device [{socket.gethostname()}] booted\n'
-            f'{socket.gethostname()} is booted at {boot_time}{fsck_info}\n\n'
+           (f'Subject:Device [{socket.getfqdn()}] booted\n'
+            f'{socket.getfqdn()} is booted at {boot_time}{fsck_info}\n\n'
             f'Latest log:\n{lines}')]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     cmd = ['/usr/bin/msmtp', '-t', 'root']
