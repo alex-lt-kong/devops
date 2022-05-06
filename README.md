@@ -69,6 +69,7 @@ virt-install \
 * `virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone`
 * It takes care of MAC address conflicts, etc.
 * It does not change:
+  * Hostname in `/etc/hosts` and `/etc/hostname`
   * SSH host keys:
     * Remove existing keys: `rm -v /etc/ssh/ssh_host_*`
     * Re-generate: `dpkg-reconfigure openssh-server`
