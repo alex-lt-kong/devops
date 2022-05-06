@@ -66,11 +66,13 @@ virt-install \
 
 ### Clone an existing VM
 
-* virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone
-* It takes care of MAC address, etc.
-* It does not change SSH host keys, though:
-  * Remove existing keys: `rm -v /etc/ssh/ssh_host_*`
-  * Re-generate: `dpkg-reconfigure openssh-server`
+* `virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone`
+* It takes care of MAC address conflicts, etc.
+* It does not change:
+  * SSH host keys:
+    * Remove existing keys: `rm -v /etc/ssh/ssh_host_*`
+    * Re-generate: `dpkg-reconfigure openssh-server`
+  * Root password: `passwd`
 
 ### Enable/Disable guest auto start
 
