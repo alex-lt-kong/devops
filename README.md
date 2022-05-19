@@ -63,6 +63,25 @@ virt-install \
 * Issue on guest: `mount -t virtiofs mount_tag /mnt/mount/path`
 * Reference: https://libvirt.org/kbase/virtiofs.html
 
+### Attach USB device to guest
+
+* Check the address of the USB device to be attached:
+
+```
+~# lsusb
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 05a3:9230 ARC International Camera
+```
+
+* Revise the VM's XML definition as followw on host:
+```
+<hostdev mode='subsystem' type='usb' managed='yes'>
+  <source>
+    <address bus='[Bus]' device='[Device]'/>
+  </source>
+  <address type='usb' bus='0' port='2'/>
+</hostdev>
+```
 
 ### Clone an existing VM
 
