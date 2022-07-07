@@ -99,3 +99,12 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 * Enable: `virsh autostart [Guest Name]`
 * Disable: `virsh autostart [Guest Name] --disable`
 
+
+### Expand guest VM's disk size as well as partitions on it
+
+* List partitions inside guest: `df -h`
+* Install necessary package on host: `apt install libguestfs-tools`
+* Increase disk size on host: `qemu-img resize vm.qcow2 +20G`
+* Backup original qcow file on host: `cp vm.qcow2 vm-orig.qcow2`
+* Expand partition on host: `virt-resize -expand /dev/sda1 vm-orig.qcow2 vm.qcow2`
+* Boot into guest, if everything okay, remove backup disk file `rm vm-orig.qcow2`
