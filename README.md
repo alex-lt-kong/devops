@@ -94,10 +94,12 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
     * Re-generate: `dpkg-reconfigure openssh-server`
   * Root password: `passwd`
 
-### Enable/Disable guest auto start
+### Auto start management
 
 * Enable: `virsh autostart [Guest Name]`
 * Disable: `virsh autostart [Guest Name] --disable`
+* List all guests which will be be auto-started: `virsh list --all --autostart`
+* List all guests which will NOT be auto-started: `virsh list --all --no-autostart`
 
 
 ### Expand guest VM's disk size as well as partitions on it
