@@ -39,7 +39,7 @@ virt-install \
 
 ### Shared directory
 
-* `virsh edit [VMName]`
+* `virsh edit <VMName>`
 * Revise the VM's XML definition as follows on host
 ```
 <domain>
@@ -85,7 +85,7 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 
 ### Clone an existing VM
 
-* `virt-clone --original [OrigVMName] --name [NewVMName] --auto-clone`
+* `virt-clone --original <OrigVMName> --name <NewVMName> --auto-clone`
 * It takes care of MAC address conflicts, etc.
 * It does not change:
   * Hostname in `/etc/hosts` and `/etc/hostname`
@@ -96,8 +96,8 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 
 ### Auto start management
 
-* Enable: `virsh autostart [Guest Name]`
-* Disable: `virsh autostart [Guest Name] --disable`
+* Enable: `virsh autostart <VMName>`
+* Disable: `virsh autostart <VMName> --disable`
 * List all guests which will be be auto-started: `virsh list --all --autostart`
 * List all guests which will NOT be auto-started: `virsh list --all --no-autostart`
 
@@ -110,3 +110,6 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 * Backup original qcow file on host: `cp vm.qcow2 vm-orig.qcow2`
 * Expand partition on host: `virt-resize -expand /dev/sda1 vm-orig.qcow2 vm.qcow2`
 * Boot into guest, if everything okay, remove backup disk file `rm vm-orig.qcow2`
+
+### Miscellaneous
+* Rename a guest: `virsh domrename <OldVMName> <NewVMName>`
