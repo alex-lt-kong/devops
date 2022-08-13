@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import datetime as dt
+import os
 import pandas as pd
 
 from emailer import emailer
@@ -20,7 +21,7 @@ def main() -> int:
   if df_pf.shape[0] == 0 and df_bpe.shape[0] == 0:
     return 0
   emailer.send_email_from_settings(
-    settings_path='./settings.json',
+    settings_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'),
     subject='APC Power Outage Report',
     mainbody=f'power_failure_count: {df_pf.shape[0]}, battery_exhaused_count: {df_bpe.shape[0]}:\n{df}'
   )
