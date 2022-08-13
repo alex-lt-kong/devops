@@ -1,0 +1,6 @@
+[submodule "emailer"]
+	path = emailer
+	url = https://github.com/alex-lt-kong/emailer.git
+[submodule "power-outage-monitor/emailer"]
+	path = power-outage-monitor/emailer
+	url = https://github.com/alex-lt-kong/emailer.git

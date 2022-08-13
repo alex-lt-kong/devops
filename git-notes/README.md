@@ -1,3 +1,7 @@
+## Use a proxy
+
+* `git config --global http.proxy 'socks5://127.0.0.1:6666'`
+
 ## Merge two Git repositories without breaking their commit logs
 
 * `cd` into `repo_a`.
