@@ -22,7 +22,7 @@ def main() -> int:
   emailer.send_email_from_settings(
     settings_path='./settings.json',
     subject='APC Power Outage Report',
-    mainbody=f'power_failure_count: {df_pf.shape[0]}, battery_exhaused_count: {df_bpe.shape[0]}:\n{df.to_html()}'
+    mainbody=f'power_failure_count: {df_pf.shape[0]}, battery_exhaused_count: {df_bpe.shape[0]}:\n{df}'
   )
   return 0
 
