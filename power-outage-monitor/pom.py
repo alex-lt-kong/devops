@@ -18,12 +18,13 @@ def main() -> int:
   df = df[df['Time'] > (dt.datetime.now() - dt.timedelta(days=7))]
   df_pf = df[df['Message'] == 'Power failure.']
   df_bpe = df[df['Message'] == 'Battery power exhausted.']
-  if df_pf.shape[0] == 0 and df_bpe.shape[0] == 0:
+  df_rrtpl = df[df['Message'] == 'Reached remaining time percentage limit on batteries.']
+  if df_pf.shape[0] == 0 and df_bpe.shape[0] == 0 and df_rrtpl.shape[0]:
     return 0
   emailer.send_email_from_settings(
     settings_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'),
     subject='APC Power Outage Report',
-    mainbody=f'power_failure_count: {df_pf.shape[0]}, battery_exhaused_count: {df_bpe.shape[0]}:\n{df}'
+    mainbody=f'power_failure_count: {df_pf.shape[0]}, battery_exhaused_count: {df_bpe.shape[0]}:, reached_remaining_limit_on_batteries_count: {df_rrtpl.shape[0]}\n{df}'
   )
   return 0
 
