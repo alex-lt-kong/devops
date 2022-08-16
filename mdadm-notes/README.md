@@ -24,3 +24,10 @@ down--when we physically replace the disk, this information is key to locate the
 0. Check if the new disk has the correct partition table: `lsblk`
 
 0. Create mirror with new disk: `mdadm --manage /dev/md0 --add /dev/sdb1`
+
+
+## Verify the integrity of an array:
+
+* Start an check offline: `/usr/share/mdadm/checkarray /dev/mdX`.
+
+* Check the status by `cat /proc/mdstat`.
