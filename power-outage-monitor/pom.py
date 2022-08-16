@@ -19,7 +19,7 @@ def main() -> int:
   df_pf = df[df['Message'] == 'Power failure.']
   df_bpe = df[df['Message'] == 'Battery power exhausted.']
   df_rrtpl = df[df['Message'] == 'Reached remaining time percentage limit on batteries.']
-  if df_pf.shape[0] == 0 and df_bpe.shape[0] == 0 and df_rrtpl.shape[0]:
+  if df_pf.shape[0] == 0 and df_bpe.shape[0] == 0 and df_rrtpl.shape[0] == 0:
     return 0
   emailer.send_email_from_settings(
     settings_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'),
