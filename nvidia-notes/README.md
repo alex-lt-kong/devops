@@ -1,0 +1,1 @@
+* Check GPU status:  `nvidia-smi`.
