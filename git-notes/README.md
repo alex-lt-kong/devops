@@ -13,3 +13,11 @@
 * Optional: Move files of `repo_a` into a sub-directory
 
 * Commit: `git commit -m "Move repo_a files into subdir"`
+
+## gitignore not effective
+
+*
+```
+git rm -rf --cached .
+git add .
+```
