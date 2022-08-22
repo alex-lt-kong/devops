@@ -79,3 +79,10 @@ rsn_pairwise=CCMP
 * Restart and the AP should work
 
 * Just to be sure, after reboot, can issue `brctl show` to check if the network bridge is established as expected.
+
+## Disable swap device
+
+* We can disable swap device to prolong the lifespan of SD card used by Raspberry Pi.
+* Turn it off: `swapoff -a`.
+* If we stop here, the swap space will be spawned again after reboot!
+* Remove the program that re-creates it: `apt remove dphys-swapfile`.
