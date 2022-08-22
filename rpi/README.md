@@ -25,17 +25,21 @@
   * Save `<username>:<hashed password>` to `/tmp/sdcard-boot/userconf`
 
 
-## Enable with sharing in AP mode
+## Enable Wi-Fi sharing in AP mode
+
+* USB Wi-Fi adapters that support AP mode on Raspberry Pi OS are pretty rare. Can find a list of them [here](https://elinux.org/RPi_USB_Wi-Fi_Adapters)
 
 * Finishing all steps using headless SSH is possible but risky, preparing physical keyboard and monitor would make 
 the process much safer.
 
-* Install `hostapd` and `dnsmasq`: `apt-get -y install hostapd bridge-utils `.
+* Install `hostapd` and optionally `bridge-utils`: `apt-get -y install hostapd bridge-utils`.
 
 * Disable them for the time being: `systemctl stop hostapd`.
 
+* Enable predictable network interface naming with `raspi-config` if needed.
+
 * Append `denyinterfaces wlan0` and `denyinterfaces eth0` to `/etc/dhcpcd.conf`
-to disable dynamic IP allocation to the subject WLAN interface.
+to disable dynamic IP allocation to the subject ethernet and WLAN interfaces.
 
 * Append the following to `/etc/network/interfaces` to define a new network bridge.
 ```
@@ -44,6 +48,7 @@ auto br0
 iface br0 inet dhcp
 bridge_ports eth0 wlan0
 ```
+The idea is that we make eth0 transparent and expose wlan0 directly as an ethernet interface.
 
 * Add the lines to `/etc/hostapd/hostapd.conf`
 ```
@@ -69,7 +74,7 @@ wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 ```
 
-* Unmask `hostapd`: `systemctl unmask hostapd`.
+* Unmask `hostapd`if needed: `systemctl unmask hostapd`.
 
 * Restart and the AP should work
 
