@@ -36,7 +36,9 @@ the process much safer.
 
 * Disable them for the time being: `systemctl stop hostapd`.
 
-* Enable predictable network interface naming with `raspi-config` if needed.
+* Enable predictable network interface naming with `raspi-config` if needed (important note:
+if network bridge has been defined using simple network interface names, revising naming
+convention may break SSH on reboot.).
 
 * Append `denyinterfaces wlan0` and `denyinterfaces eth0` to `/etc/dhcpcd.conf`
 to disable dynamic IP allocation to the subject ethernet and WLAN interfaces.
@@ -86,3 +88,6 @@ rsn_pairwise=CCMP
 * Turn it off: `swapoff -a`.
 * If we stop here, the swap space will be spawned again after reboot!
 * Remove the program that re-creates it: `apt remove dphys-swapfile`.
+
+## Disable auto login
+* Remove the corresponding line in: `/etc/systemd/system/getty@tty1.service.d/autologin.conf`.
