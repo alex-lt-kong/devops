@@ -9,7 +9,7 @@ import subprocess
 import time
 
 app_dir = os.path.dirname(os.path.realpath(__file__))
-log_path = os.path.join(app_dir, 'bn.log')
+log_path = os.path.join(app_dir, 'sn.log')
 
 @click.command()
 @click.option('--debug', is_flag=True)
