@@ -14,3 +14,10 @@ it is in PEM format.
 and then `update-ca-certificates`
 * To remove: `rm /usr/local/share/ca-certificates/trusted-ca.crt` and then
 `update-ca-certificates --fresh`
+* Expected result: 1 added
+```
+Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+```
