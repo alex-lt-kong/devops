@@ -21,3 +21,8 @@
 git rm -rf --cached .
 git add .
 ```
+
+## Store credentials
+
+* To cache: `git config [--global] credential.helper cache --timeout <seconds>`
+* To file system unencrypted (usually `~/.git-credentials`): `git config [--global] credential.helper 'store'`
