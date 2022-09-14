@@ -1,0 +1,1 @@
+`git clone` to `/usr/local/bin/`
