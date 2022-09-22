@@ -26,3 +26,7 @@ git add .
 
 * To cache: `git config [--global] credential.helper cache --timeout <seconds>`
 * To file system unencrypted (usually `~/.git-credentials`): `git config [--global] credential.helper 'store'`
+
+## git pull submodules
+
+* `git submodule update --init --recursive`

@@ -42,7 +42,8 @@ convention may break SSH on reboot.).
 
 * Append `denyinterfaces wlan0` and `denyinterfaces eth0` to `/etc/dhcpcd.conf`
 to disable dynamic IP allocation to the subject ethernet and WLAN interfaces.
-  * Note: generic Debian system uses another DHCP client, `dhclient`, the exact config change may differ.
+  * Note: generic Debian system uses another DHCP client, `dhclient`, which doesn't support the above directive.
+  * Alternatively, adding `iface eth0 inet manual` to `/etc/network/interfaces` will also do.
 
 * Append the following to `/etc/network/interfaces` to define a new network bridge.
 ```
