@@ -27,6 +27,8 @@ git add .
 * To cache: `git config [--global] credential.helper cache --timeout <seconds>`
 * To file system unencrypted (usually `~/.git-credentials`): `git config [--global] credential.helper 'store'`
 
-## git pull submodules
+## Submodules
 
-* `git submodule update --init --recursive`
+* Add new submodule: `git submodule add <remote_url> <destination_folder>`
+
+* Pull content of a submodule after `git clone`: `git submodule update --init --recursive`
