@@ -109,6 +109,8 @@ Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 * Increase disk size on host: `qemu-img resize vm.qcow2 +20G`
 * Backup original qcow file on host: `cp vm.qcow2 vm-orig.qcow2`
 * Expand partition on host: `virt-resize -expand /dev/sda1 vm-orig.qcow2 vm.qcow2`
+  * The path of partition, `/dev/sda1` is the one we get from step one, `df -h`
+  * If the path is `/dev/vda1` inside guest machine, change it to `/dev/sda1`
 * Boot into guest, if everything okay, remove backup disk file `rm vm-orig.qcow2`
 
 ### Miscellaneous
