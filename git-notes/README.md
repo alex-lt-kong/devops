@@ -32,3 +32,8 @@ git add .
 * Add new submodule: `git submodule add <remote_url> <destination_folder>`
 
 * Pull content of a submodule after `git clone`: `git submodule update --init --recursive`
+
+## Change username and email:
+
+* `git config user.name "FirstName LastName"`
+* `git config user.email "email@website.com"`
