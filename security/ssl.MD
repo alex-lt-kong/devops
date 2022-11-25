@@ -8,6 +8,11 @@
 * How to know if my certificate is in PEM format? If you can read its content by `openssl x509 -in cert.crt -text`,
 it is in PEM format.
 
+## Generate a self-signed SSL certificate
+
+* `openssl req -newkey rsa:4096 -x509 -sha512 -days 365 -nodes -out my-cert.crt -keyout my-cert.key`
+
+
 ## Add/Remove trusted CAs
 
 * To add: `cp trusted-ca.crt /usr/local/share/ca-certificates/trusted-ca.crt`
