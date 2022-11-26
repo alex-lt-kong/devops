@@ -67,21 +67,41 @@ virt-install \
 
 * Check the address of the USB device to be attached:
 
-```
+```shell
 ~# lsusb
 Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
 Bus 001 Device 003: ID 05a3:9230 ARC International Camera
 ```
 
-* Revise the VM's XML definition as followw on host:
+* If we want to add the second item to guest,
+add the following `<hostdev />` section under the `<devices />` section of
+VM's XML definition:
+```XML
+  <hostdev mode='subsystem' type='usb' managed='yes'>
+    <source>
+      <vendor id='0x05a3'/>
+      <product id='0x9230'/>
+      <address bus='1' device='3'/>
+    </source>
+  </hostdev>
 ```
+  * Note that `<address bus='1' device='3'/>` is only needed if two USB devices
+  share the same vendorId and productId; otherwise we can ignore the `<address />` 
+  section inside `<source />`.
+
+* After adding the above section amd save the XML definition, KVM will generate
+one extra `<address />` section under the `<hostdev />` section:
+```XML
 <hostdev mode='subsystem' type='usb' managed='yes'>
   <source>
-    <address bus='[Bus]' device='[Device]'/>
+    <vendor id='0x05a3'/>
+    <product id='0x9230'/>
+    <address bus='1' device='3'/>
   </source>
-  <address type='usb' bus='0' port='2'/>
+  <address type='usb' bus='0' port='6'/>
 </hostdev>
 ```
+  * Usually we can safely ignore that.
 
 ### Clone an existing VM
 
