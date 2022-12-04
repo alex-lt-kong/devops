@@ -1,4 +1,4 @@
-# SSL
+# Public Key Infrastructure
 
 * View a certificate: `openssl s_client -showcerts -connect <domain.name:443>`
 
@@ -19,10 +19,12 @@ it is in PEM format.
 and then `update-ca-certificates`
 * To remove: `rm /usr/local/share/ca-certificates/trusted-ca.crt` and then
 `update-ca-certificates --fresh`
-* Expected result: 1 added
+* Expected result: `1 added`
 ```
 Updating certificates in /etc/ssl/certs...
 1 added, 0 removed; done.
 Running hooks in /etc/ca-certificates/update.d...
 done.
 ```
+  * Note that as of 2022, many broswers, including Chrome and Firefox, maintain its own list of trusted CAs. To make
+  a self-generated CA trusted, one needs to do it separately--usually via the browser's GUI.
