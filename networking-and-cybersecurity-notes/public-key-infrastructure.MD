@@ -27,4 +27,4 @@ Running hooks in /etc/ca-certificates/update.d...
 done.
 ```
   * Note that as of 2022, many broswers, including Chrome and Firefox, maintain its own list of trusted CAs. To make
-  a self-generated CA trusted, one needs to do it separately--usually via the browser's GUI.
+    a self-generated CA trusted, one needs to do it separately--usually via the browser's GUI.
