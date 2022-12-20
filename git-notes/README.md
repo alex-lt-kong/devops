@@ -37,3 +37,7 @@ git add .
 
 * `git config user.name "FirstName LastName"`
 * `git config user.email "email@website.com"`
+
+## Revert to a previous commit
+
+* `git reset --hard <commit_id>`
