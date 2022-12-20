@@ -24,8 +24,10 @@ git add .
 
 ## Store credentials
 
-* To cache: `git config [--global] credential.helper cache --timeout <seconds>`
-* To file system unencrypted (usually `~/.git-credentials`): `git config [--global] credential.helper 'store'`
+* `git config [--global] credential.helper <cache/store>`
+  * The "cache" mode keeps credentials in memory for a certain period of time. They are purged from
+  the cache after 15 minutes.
+  * The "store" mode saves the credentials to a plain-text file on disk in home directory, and they never expire.
 
 ## Submodules
 
