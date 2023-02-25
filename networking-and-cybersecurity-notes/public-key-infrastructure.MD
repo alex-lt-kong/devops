@@ -8,6 +8,16 @@
 * How to know if my certificate is in PEM format? If you can read its content by `openssl x509 -in cert.crt -text`,
 it is in PEM format.
 
+## SSH keys
+
+* Create new:
+  * RSA: `ssh-keygen`
+  * Ed25519: `ssh-keygen -t ed25519` (a not-NIST/non-NSA algorithm)
+
+* Convert openssh format to Putty's ppk format:
+  * Install putty: `apt install putty-tools`
+  * Convert: `puttygen ~/.ssh/id_ed25519 -o ~/.ssh/id_ed25519.ppk`
+
 ## Generate a self-signed SSL certificate
 
 * `openssl req -newkey rsa:4096 -x509 -sha512 -days 365 -nodes -out my-cert.crt -keyout my-cert.key`
