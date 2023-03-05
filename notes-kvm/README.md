@@ -41,7 +41,7 @@ virt-install \
 
 * `virsh edit <VMName>`
 * Revise the VM's XML definition as follows on host
-```
+```xml
 <domain>
   ...
   <memoryBacking>
@@ -53,14 +53,14 @@ virt-install \
     ...
     <filesystem type='mount' accessmode='passthrough'>
       <driver type='virtiofs'/>
-      <source dir='/path'/>
-      <target dir='mount_tag'/>
+      <source dir='<path_on_host>'/>
+      <target dir='<mount_tag_for_guest>'/>
     </filesystem>
     ...
   </devices>
 </domain>
 ```
-* Issue on guest: `mount -t virtiofs mount_tag /mnt/mount/path`
+* Issue on guest: `mount -t virtiofs <mount_tag_for_guest> <path_on_guest>`
 * Reference: https://libvirt.org/kbase/virtiofs.html
 
 ### Attach USB device to guest
