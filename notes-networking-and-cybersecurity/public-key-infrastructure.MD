@@ -38,3 +38,17 @@ and then `update-ca-certificates`
   ```
   * Note that as of 2022, many broswers, including Chrome and Firefox, maintain its own list of trusted CAs. To make
     a self-generated CA trusted, one needs to do it separately--usually via the browser's GUI.
+
+## Apache SSL `.conf` for Let's Encrpyt certificates
+
+* This is closely related to the "Apache SSL-enabled reversed proxy" in
+[this networking note](./networking.md). Let's Encrypt generates
+a few different files, which ones should be used by Apache to follow the
+best practice?
+
+```
+SSLCertificateFile      /etc/letsencrypt/live/<domain_name>/fullchain.pem
+SSLCertificateKeyFile   /etc/letsencrypt/live/<domain_name>/privkey.pem
+```
+
+* [Reference](https://community.letsencrypt.org/t/recommended-apache-config/58294)

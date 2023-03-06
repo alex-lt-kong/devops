@@ -22,7 +22,7 @@
     CustomLog ${APACHE_LOG_DIR}/access.log combined
     SSLEngine on
 
-    SSLCertificateFile      /etc/letsencrypt/cert.pem
+    SSLCertificateFile      /etc/letsencrypt/<fullchain/cert>.pem
     SSLCertificateKeyFile   /etc/letsencrypt/privkey.pem
 
 </VirtualHost>
