@@ -63,7 +63,7 @@ virt-install \
 * Issue on guest: `mount -t virtiofs <mount_tag_for_guest> <path_on_guest>`
 * Reference: https://libvirt.org/kbase/virtiofs.html
 
-### Attach USB device to guest
+### USB device passthrough/Attach USB device to guest
 
 * Check the address of the USB device to be attached:
 
