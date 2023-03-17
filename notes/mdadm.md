@@ -19,7 +19,24 @@ down--when we physically replace the disk, this information is key to locate the
 
 0. Physically replace the disk.
 
-0. Copy the partition table from another health disk to the new disk: `sfdisk -d /dev/sda | sfdisk /dev/sdb`
+0. Create a partition on the new disk for RAID to use, we may take one of the 
+below approaches:
+
+    0. If size of the new disk is the same as an old disk, and an old disk's
+    partition table looks satisfactory, we can copy the partition table from
+    an old disk to the new disk: `sfdisk -d /dev/sda | sfdisk /dev/sdb`
+
+    0. Or we may just create a new partition like usual, with `fdisk` etc.
+
+    * Note that a RAID array can directly use the entire disk, without using
+    a partition, this may cause issue. For example, say both the old and new
+    disk are 2TB in size, but the old disk has `2 * 1024 ^ 3` = `2147483648`
+    bytes while the new disk has `2 * 1000^3` = `2000000000` bytes. If we
+    use the entire old hard disk, the new hard disk may not be large enough for
+    the RAID array! Therefore, when we get a new hard disk, we might want to
+    create a partition on top of it, and make that partition a bit smaller,
+    just in case in the future there will be a slightly smaller hard disk
+    with the same nominal capacity.
 
 0. Check if the new disk has the correct partition table: `lsblk`
 
