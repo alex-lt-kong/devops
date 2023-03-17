@@ -57,3 +57,8 @@ totally fails, it is likely that `mdadm` will simply return "everything okay" to
 * To stop: `mdadm --stop /dev/mdX`
 
 * To start: `mdadm --assemble --scan`
+
+## Grow the size of an array
+
+* If we replace some small hard disks with larger ones, we may want to grow
+the size of the RAID array: `mdadm --grow /dev/md0 -z max`
