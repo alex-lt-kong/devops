@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
 import argparse
-import datetime
-import heapq
+import datetime as dt
 import logging
 import os
 import sys
+
 
 def file_list_by_mtime(rootfolder):
     
@@ -23,6 +23,7 @@ def file_list_by_mtime(rootfolder):
 
     return sorted(file_list, key = lambda fn: os.stat(fn).st_mtime)
     #return heapq.nsmallest(count, file_list, key=lambda fn: os.stat(fn).st_mtime)
+
 
 def remove_empty_directories(path, remove_root=True):
     
@@ -47,41 +48,66 @@ def remove_empty_directories(path, remove_root=True):
             logging.info('Removing empty folder: {}'.format(path))
             os.rmdir(path)
 
+
 def remove_file_by_size_limit(file_list: list, size_limit: int, path: str):
     
     total_size = 0
     
     for single_file in file_list:
         total_size += os.stat(single_file).st_size
-    logging.info('total_size of path: {} MB'.format(round(total_size / 1024 / 1024, 1)))
-  #  for single_file in file_list:
-  #      print(datetime.datetime.fromtimestamp(os.stat(single_file).st_mtime).strftime('%Y-%m-%d %H:%M:%S'), '{} MB'.format(round(os.stat(single_file).st_size / 1024 / 1024, 1)), single_file)
+    logging.info(f'total_size of path: {round(total_size / 1024 / 1024, 1)} MB')
+
     
     for single_file in file_list:
-        logging.debug('[{}] total size: {} vs size limit: {},'.format(path[-20 if len(path) > 20 else len(path) * -1:], total_size, size_limit), end=' ')
+        logging.debug(
+            f'[{path[-20 if len(path) > 20 else len(path) * -1:]}] '
+            f'total size: {total_size} vs size limit: {size_limit}, ',
+            end=' '
+        )
         if size_limit <= total_size: 
             try:   
                 single_file_size = os.stat(single_file).st_size
-                single_file_mtime =  datetime.datetime.fromtimestamp(os.stat(single_file).st_mtime).strftime('%Y-%m-%d %H:%M')
+                single_file_mtime =  dt.datetime.fromtimestamp(
+                    os.stat(single_file).st_mtime
+                ).strftime('%Y-%m-%d %H:%M')
                 
                 os.remove(single_file)
-                logging.info('[{}] File [{}] is removed. Size: {} MB, modification time: {}'.format(path[-20 if len(path) > 20 else len(path) * -1:], 
-                single_file, round(single_file_size / 1024 / 1024, 1), single_file_mtime))
+                logging.info(
+                    f'[{path[-20 if len(path) > 20 else len(path) * -1:]}] '
+                    f'File [{single_file}] is removed. '
+                    f'Size: {round(single_file_size / 1024 / 1024, 1)} MB, '
+                    f'modification time: {single_file_mtime}'
+                )
 
                 total_size -= single_file_size                
             except:
-                logging.error('[{}] Failed to remove {}. Reason: {}'.format(path[-20 if len(path) > 20 else len(path) * -1:], single_file, sys.exc_info()))
+                logging.error(
+                    f'[{path[-20 if len(path) > 20 else len(path) * -1:]}] '
+                    f'Failed to remove {single_file}. Reason: {sys.exc_info()}'
+                )
         else:
-            logging.info('[{}] size limit is met, current total_size: {} MB'.format(path[-20 if len(path) > 20 else len(path) * -1:], round(total_size / 1024 / 1024, 1)))
+            logging.info(
+                f'[{path[-20 if len(path) > 20 else len(path) * -1:]}] size limit is met, '
+                f'current total_size: {round(total_size / 1024 / 1024, 1)} MB'
+            )
             break
 
 
 def main():
 
     ap = argparse.ArgumentParser()
-    ap.add_argument('--path', dest='path', required=True, help="The path of directory where size limit policy will be enforced")
-    ap.add_argument('--size-limit', dest='size-limit', required=True, help="The maximum size allowed of the given path (expressed in MB)")
-    ap.add_argument('--debug', dest='debug', action='store_true', help="Enable verbose debug output")
+    ap.add_argument(
+        '--path', dest='path', required=True,
+        help="The path of directory where size limit policy will be enforced"
+    )
+    ap.add_argument(
+        '--size-limit', dest='size-limit', required=True,
+        help="The maximum size allowed of the given path (expressed in MB)"
+    )
+    ap.add_argument(
+        '--debug', dest='debug', action='store_true',
+        help="Enable verbose debug output"
+    )
     args = vars(ap.parse_args())
     
     path = str(args['path'])
@@ -95,34 +121,36 @@ def main():
         print('size-limit cannot be {}'.format(args['size-limit']))
         return        
         
-    if os.path.isdir(path) == False:
-        print('path {} is not a directory'.format(path))
+    if os.path.isdir(path) is False:
+        raise RuntimeError(f'Path [{path}] is not a directory')
         return    
 
-    logfile_path = os.path.join(os.environ['HOME'], 'log/dir-size-limiter.log')
+    logfile_path = os.path.join(os.environ['HOME'], 'log/dir-rotate.log')
     logging.basicConfig(
         filename=logfile_path,
         level=logging.DEBUG if debug_mode else logging.INFO,
-        format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+        format='%(asctime)s|%(levelname)7s|%(funcName)s|%(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
     )
-    logging.info('dir-size-limiter started')
+    logging.info('dir-rotate started')
     
-    if debug_mode == True:
+    if debug_mode:
         print('Running in debug mode')
         logging.info('Running in debug mode')
     else:
         logging.info('Running in production mode')   
     
-    logging.info('path: {}, size-limit: {} MB'.format(path, round(size_limit / 1024 / 1024, 1)))
+    logging.info(
+        f'path: {path}, size-limit: {round(size_limit / 1024 / 1024, 1)} MB'
+    )
     
     logging.info('Loading directory content by modification time...')
     file_list = file_list_by_mtime(path)
-    for single_file in file_list:
-        logging.debug('[...{}] {}'.format(path[-20 if len(path) > 20 else len(path) * -1:], file_list))
+    for _ in file_list:
+        logging.debug(f'[...{path[-20 if len(path) > 20 else len(path) * -1:]}] {file_list}')
     remove_file_by_size_limit(file_list, size_limit, path)
     remove_empty_directories(path, False)
-    logging.info('dir-size-limiter finished')
+    logging.info('dir-rotate finished')
     
 if __name__ == '__main__':
         
