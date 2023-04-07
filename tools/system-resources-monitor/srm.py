@@ -24,7 +24,7 @@ def main():
         'timestamp_utc': dt.datetime.utcnow(),
     }
 
-    resp = es.index(index="system-resources",  body=doc)
+    resp = es.index(index="system-resources",  document=doc)
     if resp['result'] != 'created':
         raise RuntimeError(resp)
 
