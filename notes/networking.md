@@ -1,6 +1,6 @@
 # Network
 
-* Relay a request to a local interface to a remote one: `socat TCP4-LISTEN:4321 TCP4:localhost:4321`
+* Forward an TCP request to a local interface to a remote one: `socat TCP4-LISTEN:4321,fork TCP4:<remote-addr>:4321`
 
 ## Apache SSL-enabled reversed proxy
 
