@@ -18,7 +18,7 @@ settings_file = os.path.join(
 json_settings: Dict[str, Any] = {}
 
 
-def monitor_log():
+def monitor_log() -> None:
 
     global stop_signal
     status = {}
@@ -46,8 +46,9 @@ def monitor_log():
         # the epoch (see the time module).
         inode_no = os.stat(json_settings['log_path']).st_ino
         if (
-            status['last_position'] > os.path.getsize(json_settings['log_path'])
-            or status['inode_no'] != inode_no
+            status['last_position'] > os.path.getsize(
+                json_settings['log_path']
+            ) or status['inode_no'] != inode_no
         ):
             logging.info(
                 'Either last_position is greater than log file size '
@@ -59,8 +60,9 @@ def monitor_log():
                 json.dump(status, f)
 
         if (
-            status['last_position'] == os.path.getsize(json_settings['log_path'])
-            and status['inode_no'] == inode_no
+            status['last_position'] == os.path.getsize(
+                json_settings['log_path']
+            ) and status['inode_no'] == inode_no
         ):
             logging.info(
                 f'log file size ({status["last_position"]}bytes) and time '
@@ -72,20 +74,28 @@ def monitor_log():
             f.seek(status['last_position'])
             loglines = f.readlines()
             status['last_position'] = f.tell()
-            with open(status_file, 'w') as f:
-                json.dump(status, f)
+            with open(status_file, 'w') as g:
+                json.dump(status, g)
+        logging.info(
+            f'Since last_position {prev_last_position}, '
+            f'{len(loglines)} new lines detected'
+        )
+        for i in range(len(loglines)):
+            logline = loglines[i]
+            if json_settings['matching']['keyword'] not in logline:
+                continue
+            evaluated_cmd = []
+            for ele in json_settings['matching']['on_matched']:
+                evaluated_cmd.append(
+                    ele.format(LINE=logline)
+                )
             logging.info(
-                f'Since {prev_last_position}, {len(loglines)} new lines detected'
+                f'{i+1}/{len(loglines)} of new lines matched keyword, '
+                f'subprocess.call()ing {evaluated_cmd}'
             )
-            for logline in loglines:
-                if json_settings['matching']['keyword'] not in logline:
-                    continue
-                evaluated_cmd = []
-                for ele in json_settings['matching']['on_matched']:
-                    evaluated_cmd.append(
-                        ele.format(LINE=logline)
-                    )
-                subprocess.call(evaluated_cmd)
+            subprocess.call(evaluated_cmd)
+            if stop_signal:
+                break
 
     logging.debug('stop_signal received, monitor_log() exited')
 
