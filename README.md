@@ -1,3 +1,3 @@
-# Devops
+# DevOps
 
-* Devops notes and tools.
+* DevOps notes and tools.
