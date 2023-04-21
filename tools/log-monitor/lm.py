@@ -69,13 +69,17 @@ def monitor_log() -> None:
                 f'of inode_no ({inode_no}) not changed, skipping')
             continue
 
-        with open(json_settings['log_path']) as f:
-            prev_last_position = status['last_position']
-            f.seek(status['last_position'])
-            loglines = f.readlines()
-            status['last_position'] = f.tell()
-            with open(status_file, 'w') as g:
-                json.dump(status, g)
+        try:
+            with open(json_settings['log_path']) as f:
+                prev_last_position = status['last_position']
+                f.seek(status['last_position'])
+                loglines = f.readlines()
+                status['last_position'] = f.tell()
+        except Exception as ex:
+            logging.error(f'Failed open()ing {json_settings["log_path"]}: {ex}')
+            continue
+        with open(status_file, 'w') as f:
+            json.dump(status, f)
         logging.info(
             f'Since last_position {prev_last_position}, '
             f'{len(loglines)} new lines detected'
@@ -123,6 +127,7 @@ def main() -> None:
 
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGABRT, signal_handler)
 
     if os.path.exists(json_settings['log_path']) is False:
         logging.error('Log file not found')
