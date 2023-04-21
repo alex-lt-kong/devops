@@ -1,3 +1,4 @@
+from re import match
 from typing import Dict, Any
 import json
 import logging
@@ -89,10 +90,12 @@ def monitor_log() -> None:
             f'Since last_position {prev_last_position}, '
             f'{len(loglines)} new lines detected'
         )
+        matched_count = 0
         for i in range(len(loglines)):
             logline = loglines[i]
             if json_settings['matching']['keyword'] not in logline:
                 continue
+            matched_count += 1
             evaluated_cmd = []
             for ele in json_settings['matching']['on_matched']:
                 evaluated_cmd.append(
@@ -105,6 +108,10 @@ def monitor_log() -> None:
             subprocess.call(evaluated_cmd)
             if stop_signal:
                 break
+        if matched_count == 0:
+            logging.info(
+                f'No log lines are matched from {len(loglines)} new logs'
+            )
 
     logging.debug('stop_signal received, monitor_log() exited')
 
