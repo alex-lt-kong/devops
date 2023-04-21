@@ -30,7 +30,7 @@ def monitor_log():
         logging.info('Status file does not exist, will create one')
         status = {
             'last_position': 0,
-            'modification_time': 0
+            'inode_no': 0.0
         }
 
     while stop_signal is False:
@@ -40,32 +40,43 @@ def monitor_log():
             if stop_signal:
                 break
 
-        if status['last_position'] > os.path.getsize(json_settings['log_path']):
+        #  os.path.getmtime():
+        # Return the time of last modification of path. The return value
+        # is a floating point number giving the number of seconds since
+        # the epoch (see the time module).
+        inode_no = os.stat(json_settings['log_path']).st_ino
+        if (
+            status['last_position'] > os.path.getsize(json_settings['log_path'])
+            or status['inode_no'] != inode_no
+        ):
             logging.info(
-                'last_position is greater than log file size, resetting to 0'
+                'Either last_position is greater than log file size '
+                'or inode_no changed, resetting last_position to 0'
             )
             status['last_position'] = 0
+            status['inode_no'] = inode_no
             with open(status_file, 'w') as f:
                 json.dump(status, f)
-        elif status['last_position'] == os.path.getsize(json_settings['log_path']):
-            #  os.path.getmtime():
-            # Return the time of last modification of path. The return value
-            # is a floating point number giving the number of seconds since
-            # the epoch (see the time module).
-            modification_time = os.path.getmtime(json_settings['log_path'])
-            if status['modification_time'] == modification_time:
-                logging.info(
-                    f'log file size ({status["last_position"]}bytes) and time '
-                    f'of last modification ({modification_time}) not changed')
-                continue
+
+        if (
+            status['last_position'] == os.path.getsize(json_settings['log_path'])
+            and status['inode_no'] == inode_no
+        ):
+            logging.info(
+                f'log file size ({status["last_position"]}bytes) and time '
+                f'of inode_no ({inode_no}) not changed, skipping')
+            continue
 
         with open(json_settings['log_path']) as f:
+            prev_last_position = status['last_position']
             f.seek(status['last_position'])
             loglines = f.readlines()
             status['last_position'] = f.tell()
             with open(status_file, 'w') as f:
                 json.dump(status, f)
-
+            logging.info(
+                f'Since {prev_last_position}, {len(loglines)} new lines detected'
+            )
             for logline in loglines:
                 if json_settings['matching']['keyword'] not in logline:
                     continue
