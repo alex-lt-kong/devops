@@ -39,12 +39,17 @@ def monitor_log() -> None:
             time.sleep(1)
             if stop_signal:
                 break
-
-        #  os.path.getmtime():
-        # Return the time of last modification of path. The return value
-        # is a floating point number giving the number of seconds since
-        # the epoch (see the time module).
-        inode_no = os.stat(json_settings['log_path']).st_ino
+        try:
+            #  os.path.getmtime():
+            # Return the time of last modification of path. The return value
+            # is a floating point number giving the number of seconds since
+            # the epoch (see the time module).
+            inode_no = os.stat(json_settings['log_path']).st_ino
+        except Exception as ex:
+            # We don't want to break the monitor as the log file may currently
+            # be rotated.
+            logging.error(f'Failed os.stat()ing {json_settings["log_path"]}: {ex}')
+            continue
         if (
             status['last_position'] > os.path.getsize(
                 json_settings['log_path']
