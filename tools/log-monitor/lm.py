@@ -29,7 +29,8 @@ def monitor_log():
     else:
         logging.info('Status file does not exist, will create one')
         status = {
-            'last_position': 0
+            'last_position': 0,
+            'modification_time': 0
         }
 
     while stop_signal is False:
@@ -66,8 +67,14 @@ def monitor_log():
                 json.dump(status, f)
 
             for logline in loglines:
-                if json_settings['matching']['keyword'] in logline:
-                    subprocess.call(json_settings['matching']['on_matched'])
+                if json_settings['matching']['keyword'] not in logline:
+                    continue
+                evaluated_cmd = []
+                for ele in json_settings['matching']['on_matched']:
+                    evaluated_cmd.append(
+                        ele.format(LINE=logline)
+                    )
+                subprocess.call(evaluated_cmd)
 
     logging.debug('stop_signal received, monitor_log() exited')
 

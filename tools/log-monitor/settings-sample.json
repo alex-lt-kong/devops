@@ -3,6 +3,6 @@
     "matching": {
         "interval_sec": 5,
         "keyword": "Whatever thing you want to match",
-        "on_matched": ["echo", "matched!!!!!!!!!"]
+        "on_matched": ["echo", "matched! The line is: {LINE}"]
     }
 }
