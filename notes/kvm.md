@@ -3,6 +3,7 @@
 ## Guest Install
 
 * Command
+
 ```
 virt-install \
 --virt-type=kvm \
@@ -15,6 +16,9 @@ virt-install \
 --graphics vnc \
 --disk path=/var/lib/libvirt/images/vm.qcow2,size=11,bus=virtio,format=qcow2
 ```
+
+  * We specified `br0` as the bridge the guest uses for Internet connection,
+  on how to create one refer to [networking.md](./networking.md)
 
 * Map `localhost:5901` to `remote:5901` for secure VNC: `ssh user@host -L 5901:localhost:5901`
 

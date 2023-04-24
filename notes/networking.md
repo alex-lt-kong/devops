@@ -34,7 +34,29 @@
 
 * List all ethernet bridges: `brctl show`.
 
-* Change the interfaces linked by a bridge: edit `/etc/network/interfaces`
-(If the bridge is used by other services, such as `hostapd`, need to change
-their configurations correspondingly, e.g., `/etc/hostapd/hostapd.conf`)
+* Create a bridge:
 
+  * There are multiple ways to create a bridge and the most straightforward
+  way appears to be editing `/etc/network/interfaces`.
+  1. Let's say you have an NIC `eno0` that can access the Internet and
+  your `/etc/network/interfaces` is:
+
+      ```
+      auto eno0
+      iface eno0 inet dhcp
+      ```
+
+  1. We change it to:
+
+      ```
+      #auto eno0
+      #iface eno0 inet dhcp
+
+      auto br0
+      iface br0 inet dhcp
+          bridge_ports eno0
+          bridge_stp off # If we only have a single bridge, should turn it off
+      ```
+
+  * There are a few more options you can set, can find more details
+  [here](https://wiki.ubuntu.com/KvmWithBridge)
