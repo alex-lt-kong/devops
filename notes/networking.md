@@ -145,3 +145,11 @@ rsn_pairwise=CCMP
 * Restart and the AP should work
 
 * Just to be sure, after reboot, can issue `brctl show` to check if the network bridge is established as expected.
+
+### Troubleshooting
+
+* The log of `hostapd` usually goes to `/var/log/syslog`, you may find some
+useful information here.
+
+* It appears to be the case that we need to disable `wpa_supplicant` to make
+`hostapd` work: `systemctl mask wpa_supplicant`
