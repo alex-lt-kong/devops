@@ -3,11 +3,14 @@ from elasticsearch import Elasticsearch
 from typing import Dict, Any
 
 import datetime as dt
+import logging
 import json
 import os
 import psutil
 import socket
 import subprocess
+import sys
+
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
@@ -37,9 +40,21 @@ def get_cpu_temp()-> Dict[str, Any]:
         'timestamp_utc': dt.datetime.utcnow(),
     }
 
+def upload_one_doc(es, doc, index) -> None:
+    
+    logging.info(f'Uploading data {doc} to [{index}]')
+    resp = es.index(index=index, body=doc)
+    if resp['result'] != 'created':
+        raise RuntimeError(resp)
+
 
 def main():
-
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        stream=sys.stdout
+    )
+    logging.info('Starting system monitor')
     global config
     with open(config_path, 'r') as f:
         config = json.load(f)
@@ -49,13 +64,13 @@ def main():
         http_auth=(config['es']['username'], config['es']['password'])
     )
 
-    for key in config['items']:
-        if config['items'][key] is False:
+    for index in config['items']:
+        if config['items'][index] is False:
             continue
-        sr_doc = get_system_resources()
-        resp = es.index(index=key, body=sr_doc)
-        if resp['result'] != 'created':
-            raise RuntimeError(resp)
+        if index == 'system-resources':
+            upload_one_doc(es, get_system_resources(), index)
+        if index == 'cpu-temp':
+            upload_one_doc(es, get_cpu_temp(), index)
 
 
 if __name__ == "__main__":
