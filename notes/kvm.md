@@ -191,5 +191,8 @@ of identical or similar guest operating systems by avoiding memory duplication.
 
 * Check if it is running: `grep -H '' /sys/kernel/mm/ksm/*`
 
+* Empirical stats show this feature is pretty useful, it reduces memory usage
+of one KVM host with 7 identical debian guests from 80% (37GB) to 58% (27GB).
+
 ### Miscellaneous
 * Rename a guest: `virsh domrename <OldVMName> <NewVMName>`
