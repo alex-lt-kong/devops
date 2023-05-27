@@ -1,5 +1,6 @@
 # ===== Custom =====
 
+tools/system-monitor/config.json
 settings.json
 status.json
 
