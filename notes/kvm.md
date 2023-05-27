@@ -181,5 +181,15 @@ following section to the <domain> section:
   </qemu:commandline>
 ```
 
+### Kernel Same-Page Merging (KSM)
+
+* KSM is a memory-saving de-duplication feature that merges anonymous
+(private) pages (not pagecache ones). It allows for greater guest density
+of identical or similar guest operating systems by avoiding memory duplication.
+
+* Install: `apt-get install ksmtuned`
+
+* Check if it is running: `grep -H '' /sys/kernel/mm/ksm/*`
+
 ### Miscellaneous
 * Rename a guest: `virsh domrename <OldVMName> <NewVMName>`
