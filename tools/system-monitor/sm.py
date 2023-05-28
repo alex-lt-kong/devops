@@ -27,7 +27,7 @@ def get_voltage() -> Dict[str, Any]:
 
     return {
         'host': socket.getfqdn(),
-        'voltage': out.decode("utf-8"),
+        'voltage': float(out.decode("utf-8")),
         'timestamp_utc': dt.datetime.utcnow(),
     }
 
