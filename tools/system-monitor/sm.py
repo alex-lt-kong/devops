@@ -17,6 +17,21 @@ config_path = os.path.join(curr_dir, 'config.json')
 config: Dict[str, Any] = {}
 
 
+def get_voltage() -> Dict[str, Any]:
+
+    apcaccess_process = subprocess.Popen(['/sbin/apcaccess',
+                                          '-u', '-p', 'LINEV'],
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+    out, err = apcaccess_process.communicate()
+
+    return {
+        'host': socket.getfqdn(),
+        'voltage': out.decode("utf-8"),
+        'timestamp_utc': dt.datetime.utcnow(),
+    }
+
+
 def get_system_resources() -> Dict[str, Any]:
     return {
         'host': socket.getfqdn(),
@@ -71,6 +86,8 @@ def main():
             upload_one_doc(es, get_system_resources(), index)
         if index == 'cpu-temp':
             upload_one_doc(es, get_cpu_temp(), index)
+        if index == 'voltage':
+            upload_one_doc(es, get_voltage(), index)
 
 
 if __name__ == "__main__":
