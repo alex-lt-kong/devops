@@ -158,7 +158,6 @@ found.
 * List all guests which will be be auto-started: `virsh list --all --autostart`
 * List all guests which will NOT be auto-started: `virsh list --all --no-autostart`
 
-
 ### Expand guest VM's disk size as well as partitions on it
 
 * List partitions inside guest: `df -h`
@@ -171,6 +170,7 @@ found.
 * Boot into guest, if everything okay, remove backup disk file `rm vm-orig.qcow2`
 
 ### Nvidia GPU passthrough
+
 * to make the GPU passthrough work, you need to set KVM guest's schema to
 xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0' and then add the
 following section to the <domain> section:
@@ -195,4 +195,7 @@ of identical or similar guest operating systems by avoiding memory duplication.
 of one KVM host with 7 identical debian guests from 80% (37GB) to 58% (27GB).
 
 ### Miscellaneous
-* Rename a guest: `virsh domrename <OldVMName> <NewVMName>`
+
+* Rename a guest: `virsh domrename <OldVMName> <NewVMName>`.
+
+* Benchmark hard disk IO: [here](https://linuxreviews.org/HOWTO_Test_Disk_I/O_Performance)
