@@ -41,7 +41,7 @@ def get_system_resources() -> Dict[str, Any]:
     }
 
 
-def get_cpu_temp()-> Dict[str, Any]:
+def get_cpu_temp() -> Dict[str, Any]:
 
     sensors_process = subprocess.Popen(['/usr/bin/sensors', '-j'],
                                        stdout=subprocess.PIPE,
@@ -55,10 +55,10 @@ def get_cpu_temp()-> Dict[str, Any]:
         'timestamp_utc': dt.datetime.utcnow(),
     }
 
-def upload_one_doc(es, doc, index) -> None:
-    
+
+def upload_one_doc(es: Elasticsearch, doc, index) -> None:
     logging.info(f'Uploading data {doc} to [{index}]')
-    resp = es.index(index=index, body=doc)
+    resp = es.index(index=index, body=doc, timeout=30)
     if resp['result'] != 'created':
         raise RuntimeError(resp)
 
