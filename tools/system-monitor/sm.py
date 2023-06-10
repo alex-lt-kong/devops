@@ -58,7 +58,7 @@ def get_cpu_temp() -> Dict[str, Any]:
 
 def upload_one_doc(es: Elasticsearch, doc, index) -> None:
     logging.info(f'Uploading data {doc} to [{index}]')
-    resp = es.index(index=index, body=doc, timeout=30)
+    resp = es.index(index=index, body=doc, request_timeout=30)
     if resp['result'] != 'created':
         raise RuntimeError(resp)
 
@@ -88,6 +88,8 @@ def main():
             upload_one_doc(es, get_cpu_temp(), index)
         if index == 'voltage':
             upload_one_doc(es, get_voltage(), index)
+
+    logging.info('System monitor exited')
 
 
 if __name__ == "__main__":
