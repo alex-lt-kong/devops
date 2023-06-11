@@ -1,0 +1,14 @@
+{
+  "es": {
+    "url": "https://es.sz.lan:9200",
+    "username": "rpi-pond.sz.lan",
+    "password": "W4fIyePdZ4"
+  },
+  "items": {
+    "environment-temperature": true
+  },
+  "environment-temperature": {
+    "device-path": "/sys/bus/w1/devices/28-03089779d271/w1_slave",
+    "location": "鱼池"
+  }
+}

@@ -17,6 +17,35 @@ config_path = os.path.join(curr_dir, 'config.json')
 config: Dict[str, Any] = {}
 
 
+def get_environment_temperature() -> Dict[str, Any]:
+    
+    retry = 0
+    max_retry = 10
+    while retry < max_retry:
+
+        f = open(config['environment-temperature']['device-path'], 'r')
+        data = f.read()
+        f.close()
+
+        if "YES" in data:
+            (discard, sep, reading) = data.partition(' t=')
+            t = round(float(reading) / 1000.0, 1)
+            if t <= 60 and t >= -10:
+                break
+
+        time.sleep(5)
+        t = 32767
+        retry += 1
+
+    return {
+        'host': socket.getfqdn(),
+        'temp': t,
+        'location': config['environment-temperature']['location'],
+        'timestamp_utc': dt.datetime.utcnow(),
+    }
+
+
+
 def get_voltage() -> Dict[str, Any]:
 
     apcaccess_process = subprocess.Popen(['/sbin/apcaccess',
@@ -69,7 +98,7 @@ def main():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         stream=sys.stdout
     )
-    logging.info('Starting system monitor')
+    logging.info('Starting ES data collector')
     global config
     with open(config_path, 'r') as f:
         config = json.load(f)
@@ -88,8 +117,10 @@ def main():
             upload_one_doc(es, get_cpu_temp(), index)
         if index == 'voltage':
             upload_one_doc(es, get_voltage(), index)
+        if index == 'environment-temperature':
+            upload_one_doc(es, get_environment_temperature(), index)
 
-    logging.info('System monitor exited')
+    logging.info('ES data collector exited')
 
 
 if __name__ == "__main__":
