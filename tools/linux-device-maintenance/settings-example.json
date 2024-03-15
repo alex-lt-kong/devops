@@ -1,0 +1,26 @@
+{
+  "settings": {
+    "backup_path": "/tmp/backup/",
+    "ssh_key_dir": "~/keys",
+    "maintainer_path": "/tmp/maintainer.sh",
+    "global_exclusions": [".git/*"]
+  },
+  "servers": {    
+    "server1": {
+      "user": "root",
+      "host": "server1.local",
+      "port": 2222,
+      "key": "",
+      "directories": ["/etc/apache2", "/etc/apt"],
+      "exclusions": ["static/", "tmp/"]
+    },
+    "server2": {
+      "user": "root",
+      "host": "server2.local",
+      "port": 22,
+      "key": "my-special-key.openssh",
+      "directories": ["/var/spool/cron/crontabs"],
+      "exclusions": ["mnt/"]
+    }
+  }
+}
