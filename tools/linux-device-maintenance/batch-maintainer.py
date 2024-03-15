@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun  1 15:46:25 2021
 
-@author: Alex K.
-"""
-
+import argparse
 import colorama
 import datetime as dt
 import json
@@ -107,6 +102,9 @@ def generate_and_run(server_name: str, username: str, host: str, port: int,
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--since-index', '-s', type=int, help='Skip all devices before index')
+    args = parser.parse_args()
 
     global settings_path, backup_path, maintainer_path, ssh_key_dir, global_exclusions
     try:
@@ -127,7 +125,9 @@ def main():
 
     servers_list = list(json_data['servers'].keys())
     for i in range(len(servers_list)):
-        print(colorama.Fore.RED  + color.BOLD + f'=====  {servers_list[i]} ({i + 1} of {len(servers_list)}) =====\n' + color.END + colorama.Style.RESET_ALL)
+        if i < args.since_index:
+            continue
+        print(colorama.Fore.RED  + color.BOLD + f'=====  {servers_list[i]} ({i} of {len(servers_list)}) =====\n' + color.END + colorama.Style.RESET_ALL)
         json_server = json_data['servers'][servers_list[i]]
 
         if os.path.isfile(f'{ssh_key_dir}/{json_server["key"]}'):
