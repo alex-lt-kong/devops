@@ -54,7 +54,10 @@ def remove_file_by_size_limit(file_list: list, size_limit: int, path: str):
     total_size = 0
     
     for single_file in file_list:
-        total_size += os.stat(single_file).st_size
+        try:
+            total_size += os.stat(single_file).st_size
+        except Exception as ex:
+            logging.error(f'error os.stat()ing: {ex}')
     logging.info(f'total_size of path: {round(total_size / 1024 / 1024, 1)} MB')
 
     
