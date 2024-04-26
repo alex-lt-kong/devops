@@ -15,11 +15,11 @@ def file_list_by_mtime(rootfolder):
         for filename in filenames:
             file_path = os.path.join(dirname, filename)
             if os.path.islink(file_path):
-                logging.debug('[{}] added to file_list'.format(file_path))
+                logging.debug('[{}] unlinked'.format(file_path))
                 os.unlink(file_path)
             else:
                 file_list.append(file_path)
-                logging.debug('[{}] unlinked'.format(file_path))
+                logging.debug('[{}] added to file_list'.format(file_path))
 
     return sorted(file_list, key = lambda fn: os.stat(fn).st_mtime)
     #return heapq.nsmallest(count, file_list, key=lambda fn: os.stat(fn).st_mtime)
@@ -130,7 +130,7 @@ def main():
 
     logfile_path = os.path.join(os.environ['HOME'], 'log/dir-rotate.log')
     logging.basicConfig(
-        filename=logfile_path,
+        stream=sys.stdout,
         level=logging.DEBUG if debug_mode else logging.INFO,
         format='%(asctime)s|%(levelname)7s|%(funcName)s|%(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
