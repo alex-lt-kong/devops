@@ -128,7 +128,6 @@ def main():
         raise RuntimeError(f'Path [{path}] is not a directory')
         return    
 
-    logfile_path = os.path.join(os.environ['HOME'], 'log/dir-rotate.log')
     logging.basicConfig(
         stream=sys.stdout,
         level=logging.DEBUG if debug_mode else logging.INFO,
