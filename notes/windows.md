@@ -1,7 +1,7 @@
 
 ## PowerShell
 
-- Add a profile file to `$HOME/Document/WindowsPowerShell/profile.ps1`
+- Add a profile file to `$HOME/Documents/WindowsPowerShell/profile.ps1`
 
 - Sample profile
 ```{PowerShell}
