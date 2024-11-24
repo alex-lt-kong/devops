@@ -125,7 +125,7 @@ def main():
 
     servers_list = list(json_data['servers'].keys())
     for i in range(len(servers_list)):
-        if i < args.since_index:
+        if isinstance(args.since_index, int) and i < args.since_index:
             continue
         print(colorama.Fore.RED  + color.BOLD + f'=====  {servers_list[i]} ({i} of {len(servers_list)}) =====\n' + color.END + colorama.Style.RESET_ALL)
         json_server = json_data['servers'][servers_list[i]]
