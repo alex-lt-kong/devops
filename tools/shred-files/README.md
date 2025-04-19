@@ -1,3 +1,2 @@
-```
-cl.exe /EHsc /std:c++20 shred-files.cpp /Fe:shred-files.exe
-```
+- G++: `g++ shred-files.cpp -o shred-files -O2`
+- MSVC: `cl.exe /EHsc /std:c++20 shred-files.cpp /Fe:shred-files.exe`
