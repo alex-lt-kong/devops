@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <random>
+#include <algorithm>
 
 struct Options {
     std::string target;
@@ -57,8 +59,12 @@ int main(int argc, char* argv[]) {
     try {
         Options opts = parseArguments(argc, argv);
 
-        const std::size_t bufferSize = 1024 * 1024 * 64; // 64MB buffer
-        std::vector<char> buffer(bufferSize, 0x00);
+        const std::size_t bufferSize = 1024 * 1024 * 64;
+        std::vector<char> buffer(bufferSize);
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist(0, 255);
+        std::generate(buffer.begin(), buffer.end(), [&]() { return static_cast<char>(dist(gen)); });
 
         std::ofstream file(opts.target, std::ios::binary);
         if (!file) {
