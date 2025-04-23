@@ -3,10 +3,11 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-// #include <print>
+#include <print>
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <locale>
 
 namespace fs = std::filesystem;
 
@@ -66,10 +67,13 @@ void process_file(const fs::path &file, int pass_count) {
   // use of uintmat_t could be a trap:
   // https://thephd.dev/intmax_t-hell-c++-cc
   uintmax_t file_size = fs::file_size(file);
+
   std::cout.imbue(std::locale(""));
   std::cout << "Processing file: " << file << " (Size: " << std::fixed
             << file_size << " bytes)" << std::endl;
   std::cout.imbue(std::locale::classic());
+
+  
 
   std::fstream fs(file, std::ios::in | std::ios::out | std::ios::binary);
   if (!fs) {
@@ -118,7 +122,7 @@ void process_file(const fs::path &file, int pass_count) {
   }
 }
 
-std::vector<fs::path> getFilesInPath(const std::string &path) {
+std::vector<fs::path> get_files_in_path(const std::string &path) {
   fs::path p(path);
 
   if (!fs::exists(p)) {
@@ -146,6 +150,7 @@ std::vector<fs::path> getFilesInPath(const std::string &path) {
 }
 
 int main(int argc, char *argv[]) {
+  std::locale::global(std::locale("en_US.UTF-8"));
   Options opts;
   try {
     opts = parseArguments(argc, argv);
@@ -154,8 +159,9 @@ int main(int argc, char *argv[]) {
     printUsage(argv[0]);
     return 1;
   }
-
-  auto file_paths = getFilesInPath(opts.target);
+  std::cout << "Generating file lists...\n";
+  auto file_paths = get_files_in_path(opts.target);
+  std::cout << "Done, will process " << file_paths.size() << " files\n";
   for (const auto &file_path : file_paths) {
     process_file(file_path, opts.pass_count);
   }
