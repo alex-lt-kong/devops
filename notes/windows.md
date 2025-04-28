@@ -1,11 +1,10 @@
-
 ## PowerShell
 
 - Upgrade to PowerShell version 7 gives you a much similar feeling to bash
 
 - Add a profile file to $PROFILE
-  
 - Sample profile
+
 ```{PowerShell}
 # Make PowerShell's tab behavior similar to Bash
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
@@ -14,4 +13,6 @@ Set-PSReadlineKeyHandler -Key Tab -Function Complete
 Set-PSReadLineOption -PredictionSource None
 # Bash's alias py=python
 New-Alias -Name py -Value python
+# Mimic host
+Set-Alias -Name host -Value Resolve-DnsName
 ```
