@@ -1,3 +1,0 @@
-/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-release/CMakeFiles/tcp-to-stdout.dir
-/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-release/CMakeFiles/edit_cache.dir
-/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-release/CMakeFiles/rebuild_cache.dir
