@@ -1,0 +1,17 @@
+# ninja log v6
+0	547	1746208392167039673	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.ddi	8afc8a140976dbcd
+548	551	1746208392715028684	CMakeFiles/tcp-to-stdout.dir/CXX.dd	91c4cf13dba12da3
+548	551	1746208392715028684	/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-debug/CMakeFiles/tcp-to-stdout.dir/CXXModules.json	91c4cf13dba12da3
+548	551	1746208392715028684	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.modmap	91c4cf13dba12da3
+4	619	1746208491737316162	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.ddi	8afc8a140976dbcd
+620	623	1746208492353307105	CMakeFiles/tcp-to-stdout.dir/CXX.dd	91c4cf13dba12da3
+620	623	1746208492353307105	/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-debug/CMakeFiles/tcp-to-stdout.dir/CXXModules.json	91c4cf13dba12da3
+620	623	1746208492353307105	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.modmap	91c4cf13dba12da3
+623	7268	1746208492353307105	CMakeFiles/tcp-to-stdout.dir/main.cpp.o	3d6fee292516871
+7270	7529	1746208499001210516	tcp-to-stdout	65e83c4b7109bb50
+6	576	1746208525164850755	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.ddi	8afc8a140976dbcd
+576	581	1746208525736843246	CMakeFiles/tcp-to-stdout.dir/CXX.dd	91c4cf13dba12da3
+576	581	1746208525736843246	/home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-debug/CMakeFiles/tcp-to-stdout.dir/CXXModules.json	91c4cf13dba12da3
+576	581	1746208525736843246	CMakeFiles/tcp-to-stdout.dir/main.cpp.o.modmap	91c4cf13dba12da3
+582	7154	1746208525740843194	CMakeFiles/tcp-to-stdout.dir/main.cpp.o	3d6fee292516871
+7155	7408	1746208532316757918	tcp-to-stdout	65e83c4b7109bb50

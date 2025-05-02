@@ -1,0 +1,32 @@
+/home/mamsds/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/home/mamsds/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -DCMAKE_TOOLCHAIN_FILE=/home/mamsds/bin/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja -S /home/mamsds/repos/devops/tools/tcp-to-stdout -B /home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-release
+-- Running vcpkg install
+waiting to take filesystem lock on /home/mamsds/bin/vcpkg/.vcpkg-root...
+Detecting compiler hash for triplet x64-linux...
+Compiler found: /usr/bin/c++
+All requested packages are currently installed.
+Total install time: 331 us
+boost-asio provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(boost_asio CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Boost::asio)
+
+cxxopts provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(cxxopts CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE cxxopts::cxxopts)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+-- Running vcpkg install - done
+-- Configuring done (3.8s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/mamsds/repos/devops/tools/tcp-to-stdout/cmake-build-release

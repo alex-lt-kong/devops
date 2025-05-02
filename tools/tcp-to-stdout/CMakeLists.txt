@@ -4,6 +4,7 @@ project(echo_tcp)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(spdlog CONFIG REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 
-add_executable(echo_tcp main.cpp)
-target_link_libraries(echo_tcp PRIVATE spdlog::spdlog)
+add_executable(tcp-to-stdout main.cpp)
+target_link_libraries(tcp-to-stdout PRIVATE spdlog::spdlog cxxopts::cxxopts)

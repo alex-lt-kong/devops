@@ -1,8 +1,11 @@
-#include <iostream>
+#include <cxxopts.hpp>
 #include <boost/asio.hpp>
+#include <spdlog/spdlog.h>
+#include <fmt/ranges.h>
+
+#include <iostream>
 #include <thread>
 #include <vector>
-#include <spdlog/spdlog.h>
 #include <iomanip>
 
 using namespace boost::asio;
@@ -71,7 +74,7 @@ void listen_on_port(io_context& io_context, int port) {
             }).detach();
         }
     } catch (const boost::system::system_error& e) {
-        if (e.code() == boost::asio::error::address_in_use) {
+        if (e.code() == error::address_in_use) {
             spdlog::error("Port {} is already in use. Another instance may be listening.", port);
         } else {
             spdlog::error("Error on port {}: {}", port, e.what());
@@ -96,18 +99,37 @@ vector<int> parse_ports(const string& port_string) {
     return ports;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        spdlog::error("Usage: {} <port1,port2,port3,port4>", argv[0]);
+int main(const int argc, char* argv[]) {
+    std::vector<int> ports;
+    try {
+        cxxopts::Options options("TCP To Stdout", "A simple TCP server that prints whatever it receives to stdout");
+
+        options.add_options()
+            ("p,ports", "Comma-separated ports to listen on", cxxopts::value<std::vector<int>>())
+            ("i,interface", "Network interface to bind to", cxxopts::value<std::string>()->default_value("0.0.0.0"))
+            ("h,help", "Print usage");
+
+        const auto result = options.parse(argc, argv);
+
+        if (result.count("help")) {
+            std::cout << options.help() << std::endl;
+            return 0;
+        }
+
+        if (result.count("ports")) {
+            ports = result["ports"].as<std::vector<int>>();
+        } else {
+            std::cerr << "Error: --ports argument is required." << std::endl;
+            return 1;
+        }
+        auto interface = result["interface"].as<std::string>();
+        spdlog::info("Listening {} on interface: {}", fmt::join(ports, ","), interface);
+    }
+    catch (const cxxopts::exceptions::exception& e) {
+        std::cerr << "Error parsing options: " << e.what() << std::endl;
         return 1;
     }
 
-    string port_string = argv[1];  // Read comma-separated port list
-    vector<int> ports = parse_ports(port_string);
-    if (ports.empty()) {
-        spdlog::error("No valid ports provided.");
-        return 1;
-    }
     io_context io_context;
     vector<thread> threads;
 
