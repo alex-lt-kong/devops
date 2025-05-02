@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(echo_tcp)
+project(tcp_to_stdout)
 
 set(CMAKE_CXX_STANDARD 20)
 
