@@ -6,9 +6,11 @@
 
 - CaptureFilters: select interface, then input the filter conditions like this: `dst port 8080 or dst port 8081`
 
-  ![](assets/wireshark-welcome-page.png "wireshark-welcome-page.png")
+  ![](./assets/wireshark-welcome-page.png "wireshark-welcome-page.png")
 
 - DisplayFilters, typically your condition is like this: `tcp.dstport == 8080`
+
+  ![](./assets/wireshark-welcome-page.png "wireshark-capturing-gui.png")
 
 ## Modem
 
