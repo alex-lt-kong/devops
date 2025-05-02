@@ -2,6 +2,18 @@
 
 - Forward an TCP request to a local interface to a remote one: `socat TCP4-LISTEN:4321,fork TCP4:<remote-addr>:4321`
 
+## Wireshark
+
+- CaptureFilters: select interface, then input the filter conditions like this: `dst port 8080 or dst port 8081`
+
+  ![](assets/wireshark-welcome-page.png "wireshark-welcome-page.png")
+
+- DisplayFilters, typically your condition is like this: `tcp.dstport == 8080`
+
+## Modem
+
+Enable modem on Linux: `sudo mbimcli --device-open-proxy --device="/dev/cdc-wdm0" --quectel-set-radio-state=on`
+
 ## Apache SSL-enabled reversed proxy
 
 - Enable necessarily modules: `a2enmod proxy_http`, `a2enmod ssl`
@@ -152,7 +164,3 @@ rsn_pairwise=CCMP
 
 - It appears to be the case that we need to disable `wpa_supplicant` to make
   `hostapd` work: `systemctl mask wpa_supplicant`
-
-## Modem
-
-Enable modem on Linux: `sudo mbimcli --device-open-proxy --device="/dev/cdc-wdm0" --quectel-set-radio-state=on`
