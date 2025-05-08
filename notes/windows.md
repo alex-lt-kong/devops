@@ -10,15 +10,18 @@ Set-PSReadlineKeyHandler -Key Tab -Function Complete
 # Disable the silly autocomplete
 # https://stackoverflow.com/questions/75205636/how-to-disable-suggestion-while-typing-in-powersh
 Set-PSReadLineOption -PredictionSource None
+
 # Bash's alias py=python
 New-Alias -Name py -Value python
+
 # Mimic host
 Set-Alias -Name host -Value Resolve-DnsName
 ```
 
 - Update the profile file
+
 ```
-"" >> $PROFILE # should fail
-mkdir $PROFILE
-"" >> $PROFILE # should work now
+cat $PROFILE
+mkdir $(Split-Path -Path $PROFILE -Parent)
+"" >> $PROFILE
 ```
