@@ -2,7 +2,6 @@
 
 - Upgrade to PowerShell version 7 gives you a much similar feeling to bash
 
-- Add a profile file to $PROFILE
 - Sample profile
 
 ```{PowerShell}
@@ -15,4 +14,11 @@ Set-PSReadLineOption -PredictionSource None
 New-Alias -Name py -Value python
 # Mimic host
 Set-Alias -Name host -Value Resolve-DnsName
+```
+
+- Update the profile file
+```
+"" >> $PROFILE # should fail
+mkdir $PROFILE
+"" >> $PROFILE # should work now
 ```

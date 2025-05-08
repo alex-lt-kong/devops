@@ -1,6 +1,9 @@
 {
-  "name" : "echo-tcp",
+  "name" : "tcp-to-stdout",
   "version" : "0.0.1",
-  "dependencies" : [ "boost-asio", "spdlog", "cxxopts"],
+  "dependencies" : [ "boost-asio", "spdlog", {
+    "name" : "cxxopts",
+    "version>=" : "3.2.1"
+  } ],
   "builtin-baseline" : "65be7019941e1401e02daaba0738cab2c8a4a355"
 }
