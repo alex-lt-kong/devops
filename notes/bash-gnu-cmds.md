@@ -12,3 +12,10 @@ export HISTSIZE=10000
 export HISTTIMEFORMAT="[%F %T] "
 shopt -s histappend
 ```
+
+- Turn on/off monitor:
+
+```
+DISPLAY=:0 xrandr --output VGA-1 --off
+DISPLAY=:0 xrandr --output VGA-1 --auto --mode 1440x900
+```
